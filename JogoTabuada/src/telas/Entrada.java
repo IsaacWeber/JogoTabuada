@@ -2,11 +2,10 @@ package telas;
 
 
 import telas.design.Cores;
+import telas.design.EstiloLKF;
 import telas.design.Fontes;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.Arrays;
 
 public class Entrada extends JFrame {
     private JLabel tituloLbl;
@@ -18,7 +17,7 @@ public class Entrada extends JFrame {
 
     public Entrada() {
         super("Entrada | Jogo da Tabuada");
-        mudaLookAndFeel("Nimbus");
+        EstiloLKF.mudaLookAndFeel("Nimbus");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(800, 600);
@@ -63,20 +62,6 @@ public class Entrada extends JFrame {
         btnIniciar.setFont(Fontes.FONTE_GERAL);
         btnIniciar.setBounds(getWidth()/2 + 150, getHeight() - 100, 150, 50);
         add(btnIniciar);
-    }
-
-    private void mudaLookAndFeel(String lkfName) {
-        try {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if (lkfName.equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        }catch (Exception e) {
-            System.err.println("\nLook and Feel error: \n\t" + e.getMessage());
-        }
-
     }
 
     public static void main(String[] args) {
