@@ -18,18 +18,22 @@ public class Principal extends JFrame {
     private JLabel lblNumeroAleatorio;
     private JLabel lblImgAcertoErro;
     private JButton btnVoltar;
+    private Entrada telaEntrada;
+    private int numero;
 
-    public Principal() {
+    public Principal(Entrada telEnt, int n) {
         super("Principal | Jogo da Tabuada");
         EstiloLKF.mudaLookAndFeel("Nimbus");
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(800, 600);
         setExtendedState(MAXIMIZED_BOTH);
         setLayout(null);
         getContentPane().setBackground(Cores.COR_FUNDO);
+        telaEntrada = telEnt;
+        numero = n;
         inserirBotaoVoltar();
-        inserirPainelCalculo("2");
+        inserirPainelCalculo(String.valueOf(numero));
         inserirPainelAlternativas();
         setVisible(true);
     }
@@ -81,13 +85,22 @@ public class Principal extends JFrame {
         btnVoltar = new JButton(pegarIcone("voltar.png"));
         btnVoltar.setBounds(10, 10, 70, 70);
         btnVoltar.setFocusable(false);
+        btnVoltar.addActionListener(e -> {
+            setVisible(false);
+            telaEntrada.setVisible(true);
+        });
         add(btnVoltar);
     }
 
     private ImageIcon pegarIcone(String nome) {
         return new ImageIcon(Toolkit.getDefaultToolkit().getImage(Principal.class.getResource("imgs/" + nome)));
     }
-    public static void main(String[] args) {
-        new Principal();
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    public void atualizarNumero() {
+        lblNumeroEscolhido.setText(String.valueOf(numero));
     }
 }

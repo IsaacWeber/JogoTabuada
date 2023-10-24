@@ -14,11 +14,12 @@ public class Entrada extends JFrame {
     private JSpinner spnNumero;
     private SpinnerNumberModel spnNumeroModel;
     private JButton btnIniciar;
+    private Principal telaPrincipal;
 
     public Entrada() {
         super("Entrada | Jogo da Tabuada");
         EstiloLKF.mudaLookAndFeel("Nimbus");
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(800, 600);
         setExtendedState(MAXIMIZED_BOTH);
@@ -61,6 +62,16 @@ public class Entrada extends JFrame {
         btnIniciar = new JButton("Iniciar");
         btnIniciar.setFont(Fontes.FONTE_GERAL);
         btnIniciar.setBounds(getWidth()/2 + 150, getHeight() - 100, 150, 50);
+        btnIniciar.addActionListener(e -> {
+            setVisible(false);
+            if(telaPrincipal == null) {
+                telaPrincipal = new Principal(this, (int)spnNumeroModel.getNumber());
+            } else {
+                telaPrincipal.setNumero((int)spnNumeroModel.getNumber());
+                telaPrincipal.atualizarNumero();
+                telaPrincipal.setVisible(true);
+            }
+        });
         add(btnIniciar);
     }
 

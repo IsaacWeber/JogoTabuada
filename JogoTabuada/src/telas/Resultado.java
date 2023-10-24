@@ -57,7 +57,7 @@ public class Resultado extends JFrame {
         lblImgAcerto.setBounds(0, 0, 128, 128);
         painelResultado.add(lblImgAcerto);
 
-        lblAcerto = new JLabel("00");
+        lblAcerto = new JLabel("0");
         lblAcerto.setFont(Fontes.FONTE_TITULO);
         lblAcerto.setBounds(140, 25, 300, 100);
         painelResultado.add(lblAcerto);
