@@ -1,5 +1,6 @@
 package telas;
 
+import logica.GeradorNumerico;
 import telas.design.Cores;
 import telas.design.EstiloLKF;
 import telas.design.Fontes;
@@ -20,6 +21,11 @@ public class Principal extends JFrame {
     private JButton btnVoltar;
     private Entrada telaEntrada;
     private int numero;
+    private int acertos;
+    private int erros;
+    private JButton btnFinalizar;
+    private Resultado telaResultado;
+    private GeradorNumerico geradorNumerico;
 
     public Principal(Entrada telEnt, int n) {
         super("Principal | Jogo da Tabuada");
@@ -35,6 +41,7 @@ public class Principal extends JFrame {
         inserirBotaoVoltar();
         inserirPainelCalculo(String.valueOf(numero));
         inserirPainelAlternativas();
+        inserirBotaoFinalizar();
         setVisible(true);
     }
 
@@ -92,6 +99,13 @@ public class Principal extends JFrame {
         add(btnVoltar);
     }
 
+    private void inserirBotaoFinalizar() {
+        btnFinalizar = new JButton("Finalizar");
+        btnFinalizar.setFont(Fontes.FONTE_GERAL);
+        btnFinalizar.setBounds(430, 600, 200, 60);
+        btnFinalizar.addActionListener(e -> { if(telaResultado == null) telaResultado = new Resultado(acertos, erros); } );
+        add(btnFinalizar);
+    }
     private ImageIcon pegarIcone(String nome) {
         return new ImageIcon(Toolkit.getDefaultToolkit().getImage(Principal.class.getResource("imgs/" + nome)));
     }

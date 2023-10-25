@@ -54,7 +54,6 @@ public class Entrada extends JFrame {
         spnNumero.setBounds(320, 0, 70, 50);
         spnNumero.setEditor(new JSpinner.DefaultEditor(spnNumero)); // Faz com que fique nao editavel
         painelNumero.add(spnNumero);
-
         add(painelNumero);
     }
 

@@ -19,18 +19,18 @@ public class Resultado extends JFrame {
     private JButton btnFechar;
     private JButton btnReiniciar;
 
-    public Resultado() {
+    public Resultado(int acertos, int erros) {
         super("Resultado | Jogo da Tabuada");
         EstiloLKF.mudaLookAndFeel("Nimbus");
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(800, 600);
         setExtendedState(MAXIMIZED_BOTH);
         setLayout(null);
         getContentPane().setBackground(Cores.COR_FUNDO);
         inserirTitulo();
-        inserirBotaoVoltar();
-        inserirPainelResultado();
+        //inserirBotaoVoltar();
+        inserirPainelResultado(acertos, erros);
         inserirPainelBotoes();
         setVisible(true);
     }
@@ -48,7 +48,7 @@ public class Resultado extends JFrame {
         add(btnVoltar);
     }
 
-    private void inserirPainelResultado() {
+    private void inserirPainelResultado(int acertos, int erros) {
         painelResultado = new JPanel(null);
         painelResultado.setBackground(Cores.COR_FUNDO);
         painelResultado.setBounds(200, 250, getWidth(), 150);
@@ -57,7 +57,7 @@ public class Resultado extends JFrame {
         lblImgAcerto.setBounds(0, 0, 128, 128);
         painelResultado.add(lblImgAcerto);
 
-        lblAcerto = new JLabel("0");
+        lblAcerto = new JLabel(String.valueOf(acertos));
         lblAcerto.setFont(Fontes.FONTE_TITULO);
         lblAcerto.setBounds(140, 25, 300, 100);
         painelResultado.add(lblAcerto);
@@ -66,7 +66,7 @@ public class Resultado extends JFrame {
         lblImgErro.setBounds(450, 0, 128, 128);
         painelResultado.add(lblImgErro);
 
-        lblErro = new JLabel("0");
+        lblErro = new JLabel(String.valueOf(erros));
         lblErro.setFont(Fontes.FONTE_TITULO);
         lblErro.setBounds(590, 25, 300, 100);
         painelResultado.add(lblErro);
@@ -98,6 +98,6 @@ public class Resultado extends JFrame {
     }
 
     public static void main(String[] args) {
-        new Resultado();
+        new Resultado(10, 10);
     }
 }
