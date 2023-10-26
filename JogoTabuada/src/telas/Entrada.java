@@ -48,7 +48,7 @@ public class Entrada extends JFrame {
         lblDesc.setBounds(0, 0, 310, 50);
         painelNumero.add(lblDesc);
 
-        spnNumeroModel = new SpinnerNumberModel(2, 1, 10, 1);
+        spnNumeroModel = new SpinnerNumberModel(5, 1, 10, 1);
         spnNumero = new JSpinner(spnNumeroModel);
         spnNumero.setFont(Fontes.FONTE_GERAL);
         spnNumero.setBounds(320, 0, 70, 50);
@@ -66,8 +66,7 @@ public class Entrada extends JFrame {
             if(telaPrincipal == null) {
                 telaPrincipal = new Principal(this, (int)spnNumeroModel.getNumber());
             } else {
-                telaPrincipal.setNumero((int)spnNumeroModel.getNumber());
-                telaPrincipal.atualizarNumero();
+                telaPrincipal.reiniciar((int)spnNumeroModel.getNumber());
                 telaPrincipal.setVisible(true);
             }
         });
