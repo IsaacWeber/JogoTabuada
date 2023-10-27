@@ -1,11 +1,13 @@
 package telas;
 
+import main.Exe;
 import telas.design.Cores;
 import telas.design.EstiloLKF;
 import telas.design.Fontes;
+import telas.handlers.TelaHandler;
+import telas.imgs.GerenciadorImagens;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class Resultado extends JFrame {
     private JButton btnVoltar;
@@ -18,20 +20,24 @@ public class Resultado extends JFrame {
     private JPanel painelBotoes;
     private JButton btnFechar;
     private JButton btnReiniciar;
+    private Entrada telaEntrada;
 
-    public Resultado(int acertos, int erros) {
+    public Resultado(Entrada telaEntrada, long acertos, long erros) {
         super("Resultado | Jogo da Tabuada");
         EstiloLKF.mudaLookAndFeel("Nimbus");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setIconImage(GerenciadorImagens.pegarImagem("tabuada.png"));
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(800, 600);
         setExtendedState(MAXIMIZED_BOTH);
         setLayout(null);
         getContentPane().setBackground(Cores.COR_FUNDO);
+        this.telaEntrada = telaEntrada;
         inserirTitulo();
         //inserirBotaoVoltar();
         inserirPainelResultado(acertos, erros);
         inserirPainelBotoes();
+        addWindowListener(new TelaHandler(this));
         setVisible(true);
     }
 
@@ -42,18 +48,18 @@ public class Resultado extends JFrame {
         add(lblTitulo);
     }
     private void inserirBotaoVoltar() {
-        btnVoltar = new JButton(pegarIcone("voltar.png"));
+        btnVoltar = new JButton(GerenciadorImagens.pegarIcone("voltar.png"));
         btnVoltar.setBounds(10, 10, 70, 70);
         btnVoltar.setFocusable(false);
         add(btnVoltar);
     }
 
-    private void inserirPainelResultado(int acertos, int erros) {
+    private void inserirPainelResultado(long acertos, long erros) {
         painelResultado = new JPanel(null);
         painelResultado.setBackground(Cores.COR_FUNDO);
         painelResultado.setBounds(200, 250, getWidth(), 150);
 
-        lblImgAcerto = new JLabel(pegarIcone("acerto.png"));
+        lblImgAcerto = new JLabel(GerenciadorImagens.pegarIcone("acerto.png"));
         lblImgAcerto.setBounds(0, 0, 128, 128);
         painelResultado.add(lblImgAcerto);
 
@@ -62,7 +68,7 @@ public class Resultado extends JFrame {
         lblAcerto.setBounds(140, 25, 300, 100);
         painelResultado.add(lblAcerto);
 
-        lblImgErro = new JLabel(pegarIcone("erro.png"));
+        lblImgErro = new JLabel(GerenciadorImagens.pegarIcone("erro.png"));
         lblImgErro.setBounds(450, 0, 128, 128);
         painelResultado.add(lblImgErro);
 
@@ -83,21 +89,32 @@ public class Resultado extends JFrame {
         btnReiniciar = new JButton("Reiniciar");
         btnReiniciar.setFont(Fontes.FONTE_GERAL);
         btnReiniciar.setBounds(0, 0, 180, 50);
+        btnReiniciar.addActionListener(e -> {
+            if(telaEntrada != null) {
+                dispose();
+                telaEntrada = null;
+                new Exe().main(null); // Reinicia
+            }
+        });
+
         painelBotoes.add(btnReiniciar);
 
         btnFechar = new JButton("Fechar");
         btnFechar.setFont(Fontes.FONTE_GERAL);
         btnFechar.setBounds(230, 0, 180, 50);
+        btnFechar.addActionListener(e -> {
+            //System.exit(0);
+
+            JOptionPane.showMessageDialog(null,
+                    "Obrigado por jogar!",
+                    "Obrigado!",
+                    JOptionPane.PLAIN_MESSAGE,
+                    GerenciadorImagens.pegarIcone("tabuada.png"));
+            System.exit(0);
+        });
         painelBotoes.add(btnFechar);
 
         add(painelBotoes);
     }
 
-    private ImageIcon pegarIcone(String nome) {
-        return new ImageIcon(Toolkit.getDefaultToolkit().getImage(Principal.class.getResource("imgs/" + nome)));
-    }
-
-    public static void main(String[] args) {
-        new Resultado(10, 10);
-    }
 }

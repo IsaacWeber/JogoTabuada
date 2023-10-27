@@ -4,6 +4,8 @@ import logica.GeradorNumerico;
 import telas.design.Cores;
 import telas.design.EstiloLKF;
 import telas.design.Fontes;
+import telas.handlers.TelaHandler;
+import telas.imgs.GerenciadorImagens;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,8 +26,8 @@ public class Principal extends JFrame {
     private Entrada telaEntrada;
     private int numeroEscolhido;
     private int numeroAleatorio;
-    private int acertos;
-    private int erros;
+    private long acertos;
+    private long erros;
     private JButton btnFinalizar;
     private Resultado telaResultado;
     private GeradorNumerico geradorNumerico;
@@ -34,7 +36,8 @@ public class Principal extends JFrame {
     public Principal(Entrada telEnt, int n) {
         super("Principal | Jogo da Tabuada");
         EstiloLKF.mudaLookAndFeel("Nimbus");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setIconImage(GerenciadorImagens.pegarImagem("tabuada.png"));
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(800, 600);
         setExtendedState(MAXIMIZED_BOTH);
@@ -46,18 +49,19 @@ public class Principal extends JFrame {
         numeroAleatorio = geradorNumerico.gerarNumeroSemRepeticao();
         opcoesAleatorias = geradorNumerico.gerarResultados(numeroEscolhido, numeroAleatorio, NUMERO_ALTERNATIVAS);
         inserirBotaoVoltar();
-        inserirPainelCalculo(String.valueOf(numeroEscolhido));
+        inserirPainelCalculo(numeroEscolhido);
         inserirPainelAlternativas();
         inserirBotaoFinalizar();
+        addWindowListener(new TelaHandler(this));
         setVisible(true);
     }
 
-    private void inserirPainelCalculo(String numero) {
+    private void inserirPainelCalculo(int numero) {
         painelCalculo = new JPanel(null);
         painelCalculo.setBackground(Cores.COR_FUNDO);
         painelCalculo.setBounds(300, 200, getWidth() , 200);
 
-        lblNumeroEscolhido = new JLabel(numero);
+        lblNumeroEscolhido = new JLabel(numero < 10 ? " " + String.valueOf(numero) : String.valueOf(numero));
         lblNumeroEscolhido.setFont(Fontes.FONTE_GIGANTE);
         lblNumeroEscolhido.setBounds(0, 0, 200, 200);
         painelCalculo.add(lblNumeroEscolhido);
@@ -97,7 +101,7 @@ public class Principal extends JFrame {
     }
 
     private void inserirBotaoVoltar() {
-        btnVoltar = new JButton(pegarIcone("voltar.png"));
+        btnVoltar = new JButton(GerenciadorImagens.pegarIcone("voltar.png"));
         btnVoltar.setBounds(10, 10, 70, 70);
         btnVoltar.setFocusable(false);
         btnVoltar.addActionListener(e -> {
@@ -118,12 +122,23 @@ public class Principal extends JFrame {
         btnFinalizar = new JButton("Finalizar");
         btnFinalizar.setFont(Fontes.FONTE_GERAL);
         btnFinalizar.setBounds(430, 600, 200, 60);
-        btnFinalizar.addActionListener(e -> { if(telaResultado == null) telaResultado = new Resultado(acertos, erros); } );
+        btnFinalizar.addActionListener(e -> {
+            int opcao = JOptionPane.showOptionDialog(this,
+                    "Tem certeza que deseja finalizar?",
+                    "Finalizar?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    new String[]{"Sim", "Não"},
+                    "Não");
+
+            if(opcao == JOptionPane.YES_OPTION && telaResultado == null) {
+                telaResultado = new Resultado(telaEntrada, acertos, erros);
+                dispose();
+            }
+        } );
         btnFinalizar.setFocusable(false);
         add(btnFinalizar);
-    }
-    private ImageIcon pegarIcone(String nome) {
-        return new ImageIcon(Toolkit.getDefaultToolkit().getImage(Principal.class.getResource("imgs/" + nome)));
     }
 
     public void setNumeroEscolhido(int numeroEscolhido) {
@@ -132,7 +147,7 @@ public class Principal extends JFrame {
 
     public void reiniciar(int numero) {
         numeroEscolhido = numero;
-        lblNumeroEscolhido.setText(String.valueOf(numeroEscolhido));
+        lblNumeroEscolhido.setText(numeroEscolhido < 10 ? " " + String.valueOf(numeroEscolhido) : String.valueOf(numeroEscolhido));
         atualizarNumerosAleatorios();
         acertos = erros = 0;
     }
@@ -153,10 +168,10 @@ public class Principal extends JFrame {
                 avaliandoOpcao = true;
                 if(numeroEscolhido * numeroAleatorio == Integer.parseInt(e.getActionCommand())) {
                     ++acertos;
-                    lblImgAcertoErro.setIcon(pegarIcone("acerto.png"));
+                    lblImgAcertoErro.setIcon(GerenciadorImagens.pegarIcone("acerto.png"));
                 } else {
                     ++erros;
-                    lblImgAcertoErro.setIcon(pegarIcone("erro.png"));
+                    lblImgAcertoErro.setIcon(GerenciadorImagens.pegarIcone("erro.png"));
                 }
 
                 pintaOpcoes();

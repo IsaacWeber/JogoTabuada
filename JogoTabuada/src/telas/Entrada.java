@@ -4,6 +4,8 @@ package telas;
 import telas.design.Cores;
 import telas.design.EstiloLKF;
 import telas.design.Fontes;
+import telas.handlers.TelaHandler;
+import telas.imgs.GerenciadorImagens;
 
 import javax.swing.*;
 
@@ -19,7 +21,8 @@ public class Entrada extends JFrame {
     public Entrada() {
         super("Entrada | Jogo da Tabuada");
         EstiloLKF.mudaLookAndFeel("Nimbus");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setIconImage(GerenciadorImagens.pegarImagem("tabuada.png"));
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(800, 600);
         setExtendedState(MAXIMIZED_BOTH);
@@ -28,6 +31,7 @@ public class Entrada extends JFrame {
         inserirTituloLbl();
         inserirPainelNumero();
         inserirBotaoIniciar();
+        addWindowListener(new TelaHandler(this));
         setVisible(true);
     }
 
@@ -71,10 +75,5 @@ public class Entrada extends JFrame {
             }
         });
         add(btnIniciar);
-    }
-
-    public static void main(String[] args) {
-        new Entrada();
-
     }
 }
